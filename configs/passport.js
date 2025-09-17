@@ -1,13 +1,23 @@
-//JWT STUFF
+//JWT stuff
+const passport = require('passport')
 const JwtStrategy = require('passport-jwt').Strategy
 const ExtractJwt = require('passport-jwt').ExtractJwt
 
+//db stuff
+const db = require('../db/queries')
+
+// Load environment variables
+require('dotenv').config();
+
 const opts = {}
 opts.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken()
-opts.secretOrKey = 'SECRET_KEY' //normally stored in process.env.SECRET
+opts.secretOrKey = process.env.JWT_SECRET
 
-module.exports = new JwtStrategy(opts, (jwt_payload, done) => {
-    if(jwt_payload.email === 'bruce.wayne@gmail.com')
-        return done(null, true)
-    return done(null, false)
-})
+passport.use(
+    new JwtStrategy(opts, async (jwt_payload, done) => {
+        const user = await db.lookupUser(jwt_payload.username)
+        if(user)
+            return done(null, true)
+        return done(null, false)
+    })
+)

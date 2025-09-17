@@ -1,6 +1,25 @@
 const { PrismaClient } = require('../generated/prisma')
 const prisma = new PrismaClient()
 
+async function getArticles() {
+    return prisma.post.findMany({
+        where: {
+            published: true
+        }
+    })
+}
+
+async function getArticle(articleId) {
+    return prisma.post.findFirst({
+        where: {
+            id: articleId
+        },
+        include: {
+            author: true
+        },
+    })
+}
+
 async function createNewUser(firstName, lastName, username, email, hashedPassword) {
     return await prisma.user.create({
         data: {
@@ -21,4 +40,4 @@ async function lookupUser(username) {
     })
 }
 
-module.exports = {createNewUser, lookupUser}
+module.exports = {getArticles, getArticle, createNewUser, lookupUser}
