@@ -2,10 +2,10 @@
   "name": "blog-backend",
   "version": "1.0.0",
   "description": "frontend for my simple blog, created using express.js and passport.js with jwt strategy",
-  "main": "app.js",
+  "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "devStart": "nodemon app.js"
+    "devStart": "nodemon server.js"
   },
   "repository": {
     "type": "git",
@@ -20,9 +20,13 @@
   "homepage": "https://github.com/d-hardine/blog-backend#readme",
   "dependencies": {
     "@prisma/client": "^6.16.1",
+    "bcryptjs": "^3.0.2",
     "cors": "^2.8.5",
     "dotenv": "^17.2.2",
-    "express": "^5.1.0"
+    "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "passport": "^0.7.0",
+    "passport-jwt": "^4.0.1"
   },
   "devDependencies": {
     "nodemon": "^3.1.10",

@@ -15,14 +15,15 @@ datasource db {
 }
 
 model User {
-  id        String @id @default(uuid())
-  firstName String @db.VarChar(50)
-  lastName  String @db.VarChar(50)
-  email     String @unique
-  username  String @unique
-  password  String @db.VarChar(200)
+  id        String    @id @default(uuid())
+  firstName String    @db.VarChar(50)
+  lastName  String    @db.VarChar(50)
+  email     String    @unique @db.VarChar(100)
+  username  String    @unique @db.VarChar(100)
+  password  String    @db.VarChar(200)
   posts     Post[]
-  role      Role   @default(USER)
+  comments  Comment[]
+  role      Role      @default(USER)
 }
 
 model Post {
@@ -30,16 +31,27 @@ model Post {
   createdAt  DateTime   @default(now())
   updatedAt  DateTime   @updatedAt
   title      String
+  body       String
   published  Boolean    @default(false)
   authorId   String
   author     User       @relation(fields: [authorId], references: [id])
   categories Category[]
+  comments   Comment[]
 }
 
 model Category {
   id    Int    @id @default(autoincrement())
   name  String
   posts Post[]
+}
+
+model Comment {
+  id       String @id @default(uuid())
+  authorId String
+  author   User   @relation(fields: [authorId], references: [id])
+  postId   String
+  post     Post   @relation(fields: [postId], references: [id])
+  body     String
 }
 
 enum Role {
