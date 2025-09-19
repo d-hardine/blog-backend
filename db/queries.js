@@ -5,6 +5,10 @@ async function getArticles() {
     return prisma.post.findMany({
         where: {
             published: true
+        },
+        include: {
+            categories: true,
+            comments: true
         }
     })
 }
@@ -16,6 +20,7 @@ async function getArticle(articleId) {
         },
         include: {
             author: true,
+            categories: true,
         },
     })
 }
