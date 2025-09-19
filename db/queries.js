@@ -15,9 +15,30 @@ async function getArticle(articleId) {
             id: articleId
         },
         include: {
-            author: true
+            author: true,
         },
     })
+}
+
+async function getComments(articleId) {
+    return prisma.comment.findMany({
+        where: {
+            postId: articleId
+        },
+        include: {
+            author: true
+        }
+    })
+}
+
+async function addNewComment(articleId, userId, newComment) {
+    return prisma.comment.create({
+        data: {
+            postId: articleId,
+            body: newComment,
+            authorId: userId
+        },
+    })    
 }
 
 async function createNewUser(firstName, lastName, username, email, hashedPassword) {
@@ -40,4 +61,4 @@ async function lookupUser(username) {
     })
 }
 
-module.exports = {getArticles, getArticle, createNewUser, lookupUser}
+module.exports = {getArticles, getArticle, getComments, addNewComment, createNewUser, lookupUser}

@@ -46,12 +46,13 @@ model Category {
 }
 
 model Comment {
-  id       String @id @default(uuid())
-  authorId String
-  author   User   @relation(fields: [authorId], references: [id])
-  postId   String
-  post     Post   @relation(fields: [postId], references: [id])
-  body     String
+  id        String   @id @default(uuid())
+  authorId  String
+  author    User     @relation(fields: [authorId], references: [id])
+  postId    String
+  post      Post     @relation(fields: [postId], references: [id])
+  body      String
+  createdAt DateTime @default(now())
 }
 
 enum Role {

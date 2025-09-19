@@ -15,9 +15,13 @@ opts.secretOrKey = process.env.JWT_SECRET
 
 passport.use(
     new JwtStrategy(opts, async (jwt_payload, done) => {
-        const user = await db.lookupUser(jwt_payload.username)
-        if(user)
-            return done(null, true)
-        return done(null, false)
+        try{
+            const user = await db.lookupUser(jwt_payload.username)
+            if(user)
+                return done(null, true)
+            return done(null, false)
+        } catch(err) {
+            return done(err)
+        }
     })
 )
