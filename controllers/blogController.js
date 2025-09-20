@@ -9,9 +9,16 @@ require('dotenv').config();
 const jwt = require('jsonwebtoken')
 const jwtAuthenticate = passport.authenticate('jwt', { session: false })
 
-const ArticlesGet = async (req, res) => {
-    const articles = await db.getArticles()
-    res.json(articles)
+const articlesGet = async (req, res) => {
+    
+        const articles = await db.getArticles(req.params.categoryName)
+        res.json(articles)
+    
+}
+
+const categoriesGet = async (req, res) => {
+    const categories = await db.getCategories()
+    res.json(categories)
 }
 
 const ArticleGet = async (req, res) => {
@@ -65,4 +72,4 @@ const authGet = (req, res) => {
     return res.status(200).send("Yay! You're authenticated!")
 }
 
-module.exports = { ArticlesGet, ArticleGet, commentsGet, commentPost, signUpPost, loginPost, jwtAuthenticate, authGet }
+module.exports = { articlesGet, categoriesGet, ArticleGet, commentsGet, commentPost, signUpPost, loginPost, jwtAuthenticate, authGet }

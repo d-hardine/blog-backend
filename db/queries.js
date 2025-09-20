@@ -1,16 +1,43 @@
 const { PrismaClient } = require('../generated/prisma')
 const prisma = new PrismaClient()
 
-async function getArticles() {
-    return prisma.post.findMany({
-        where: {
-            published: true
-        },
-        include: {
-            categories: true,
-            comments: true
-        }
-    })
+async function getArticles(categoryName) {
+    if(!categoryName) {
+        return prisma.post.findMany({
+            where: {
+                published: true
+            },
+            include: {
+                categories: true,
+                comments: true
+            },
+            orderBy: {
+                createdAt: 'desc'
+            }
+        })
+    } else {
+        return prisma.post.findMany({
+            where: {
+                published: true,
+                categories: {
+                    every: {
+                        name: categoryName
+                    }
+                }
+            },
+            include: {
+                categories: true,
+                comments: true
+            },
+            orderBy: {
+                createdAt: 'desc'
+            }
+        })
+    }
+}
+
+async function getCategories() {
+    return prisma.category.findMany()
 }
 
 async function getArticle(articleId) {
@@ -66,4 +93,4 @@ async function lookupUser(username) {
     })
 }
 
-module.exports = {getArticles, getArticle, getComments, addNewComment, createNewUser, lookupUser}
+module.exports = {getArticles, getCategories, getArticle, getComments, addNewComment, createNewUser, lookupUser}

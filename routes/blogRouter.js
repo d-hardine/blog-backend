@@ -3,7 +3,9 @@ const blogController = require('../controllers/blogController')
 
 const blogRouter = Router()
 
-blogRouter.get('/api/getArticles', blogController.ArticlesGet)
+blogRouter.get('/api/getArticles', blogController.articlesGet)
+blogRouter.get('/api/getArticles/:categoryName', blogController.articlesGet)
+blogRouter.get('/api/getCategories', blogController.categoriesGet)
 blogRouter.get('/api/getArticle/:articleId', blogController.ArticleGet)
 blogRouter.get('/api/getComments/:articleId', blogController.commentsGet)
 blogRouter.post('/api/postNewComment', blogController.jwtAuthenticate, blogController.commentPost)
