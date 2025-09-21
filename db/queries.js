@@ -1,8 +1,8 @@
 const { PrismaClient } = require('../generated/prisma')
 const prisma = new PrismaClient()
 
-async function getArticles(categoryName) {
-    if(!categoryName) {
+async function getArticles(categoryName, searchTerm) {
+    if(!categoryName && !searchTerm) { //if the user just open the homepage without clicking category tag and searching something
         return prisma.post.findMany({
             where: {
                 published: true
@@ -15,7 +15,7 @@ async function getArticles(categoryName) {
                 createdAt: 'desc'
             }
         })
-    } else {
+    } else if(!searchTerm && categoryName) { //if the user clicking  the category tag
         return prisma.post.findMany({
             where: {
                 published: true,
@@ -23,6 +23,23 @@ async function getArticles(categoryName) {
                     every: {
                         name: categoryName
                     }
+                }
+            },
+            include: {
+                categories: true,
+                comments: true
+            },
+            orderBy: {
+                createdAt: 'desc'
+            }
+        })
+    } else {
+        return prisma.post.findMany({ //if the user about to search something
+            where: {
+                published: true,
+                title: {
+                    contains: searchTerm,
+                    mode: 'insensitive'
                 }
             },
             include: {
@@ -93,4 +110,8 @@ async function lookupUser(username) {
     })
 }
 
-module.exports = {getArticles, getCategories, getArticle, getComments, addNewComment, createNewUser, lookupUser}
+async function searchArticle(searchInput) {
+    
+}
+
+module.exports = {getArticles, getCategories, getArticle, getComments, addNewComment, createNewUser, lookupUser, searchArticle}

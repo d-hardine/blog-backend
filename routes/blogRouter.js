@@ -9,6 +9,7 @@ blogRouter.get('/api/getCategories', blogController.categoriesGet)
 blogRouter.get('/api/getArticle/:articleId', blogController.ArticleGet)
 blogRouter.get('/api/getComments/:articleId', blogController.commentsGet)
 blogRouter.post('/api/postNewComment', blogController.jwtAuthenticate, blogController.commentPost)
+blogRouter.get('/api/searchArticles', blogController.articlesGet)
 
 blogRouter.post('/api/signup', blogController.signUpPost)
 blogRouter.post('/api/login', blogController.loginPost)

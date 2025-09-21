@@ -10,10 +10,10 @@ const jwt = require('jsonwebtoken')
 const jwtAuthenticate = passport.authenticate('jwt', { session: false })
 
 const articlesGet = async (req, res) => {
-    
-        const articles = await db.getArticles(req.params.categoryName)
-        res.json(articles)
-    
+    const categoryName = req.params.categoryName //if the user clicked category tag on navigation sidebar
+    const searchTerm = req.query.q //if the user trying to search articles
+    const articles = await db.getArticles(categoryName, searchTerm)
+    res.json(articles)
 }
 
 const categoriesGet = async (req, res) => {
