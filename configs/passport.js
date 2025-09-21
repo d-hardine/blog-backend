@@ -18,7 +18,7 @@ passport.use(
         try{
             const user = await db.lookupUser(jwt_payload.username)
             if(user)
-                return done(null, true)
+                return done(null, user)
             return done(null, false)
         } catch(err) {
             return done(err)

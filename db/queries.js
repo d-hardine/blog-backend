@@ -110,8 +110,12 @@ async function lookupUser(username) {
     })
 }
 
-async function searchArticle(searchInput) {
-    
+async function deleteComment(commentId) {
+    return prisma.comment.delete({
+        where: {
+            id: commentId
+        }
+    })
 }
 
-module.exports = {getArticles, getCategories, getArticle, getComments, addNewComment, createNewUser, lookupUser, searchArticle}
+module.exports = {getArticles, getCategories, getArticle, getComments, addNewComment, createNewUser, lookupUser, deleteComment}

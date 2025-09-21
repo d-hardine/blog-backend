@@ -33,7 +33,7 @@ const commentsGet = async (req, res) => {
 
 const commentPost = async (req, res) => {
     const {articleId, userId, newComment} = req.body
-    await db.addNewComment(articleId, userId, newComment)
+    await db.addNewComment(articleId, req.user.id, newComment)
     const comments = await db.getComments(articleId)
     res.status(200).json(comments)
 }
@@ -69,7 +69,13 @@ const loginPost = async (req, res) => {
 }
 
 const authGet = (req, res) => {
-    return res.status(200).send("Yay! You're authenticated!")
+    return res.status(200).json(req.user)
 }
 
-module.exports = { articlesGet, categoriesGet, ArticleGet, commentsGet, commentPost, signUpPost, loginPost, jwtAuthenticate, authGet }
+const commentDelete = async (req, res) => {
+    await db.deleteComment(req.body.commentId) //delete the comment
+    const comments = await db.getComments(req.body.articleId) //fetch the updated comments
+    res.status(200).json(comments)
+}
+
+module.exports = { articlesGet, categoriesGet, ArticleGet, commentsGet, commentPost, signUpPost, loginPost, jwtAuthenticate, authGet, commentDelete }

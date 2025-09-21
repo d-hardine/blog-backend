@@ -40,8 +40,8 @@ model Post {
 }
 
 model Category {
-  id     Int    @id @default(autoincrement())
-  name   String @db.VarChar(50)
+  id   Int    @id @default(autoincrement())
+  name String @db.VarChar(50)
   post Post[]
 }
 
@@ -53,6 +53,7 @@ model Comment {
   post      Post     @relation(fields: [postId], references: [id])
   body      String
   createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 enum Role {
