@@ -12,6 +12,7 @@ blogRouter.post('/api/postNewComment', blogController.jwtAuthenticate, blogContr
 blogRouter.get('/api/searchArticles', blogController.articlesGet)
 
 blogRouter.delete('/api/delete', blogController.commentDelete)
+blogRouter.put('/api/edit', blogController.commentEdit)
 
 blogRouter.post('/api/signup', blogController.signUpPost)
 blogRouter.post('/api/login', blogController.loginPost)

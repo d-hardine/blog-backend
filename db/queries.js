@@ -76,6 +76,9 @@ async function getComments(articleId) {
         },
         include: {
             author: true
+        },
+        orderBy: {
+            createdAt: 'desc'
         }
     })
 }
@@ -118,4 +121,15 @@ async function deleteComment(commentId) {
     })
 }
 
-module.exports = {getArticles, getCategories, getArticle, getComments, addNewComment, createNewUser, lookupUser, deleteComment}
+async function editComment(commentId, editComment) {
+    return prisma.comment.update({
+        where: {
+            id: commentId
+        },
+        data: {
+            body: editComment
+        }
+    })    
+}
+
+module.exports = {getArticles, getCategories, getArticle, getComments, addNewComment, createNewUser, lookupUser, deleteComment, editComment}

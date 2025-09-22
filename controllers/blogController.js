@@ -78,4 +78,23 @@ const commentDelete = async (req, res) => {
     res.status(200).json(comments)
 }
 
-module.exports = { articlesGet, categoriesGet, ArticleGet, commentsGet, commentPost, signUpPost, loginPost, jwtAuthenticate, authGet, commentDelete }
+const commentEdit = async (req, res) => {
+    const { commentId, articleId, editComment} = req.body
+    await db.editComment(commentId, editComment) //update the comment
+    const comments = await db.getComments(articleId) //fetch the updated comments
+    res.status(200).json(comments)
+}
+
+module.exports = {
+    articlesGet,
+    categoriesGet,
+    ArticleGet,
+    commentsGet,
+    commentPost,
+    signUpPost,
+    loginPost,
+    jwtAuthenticate,
+    authGet,
+    commentDelete,
+    commentEdit
+}
