@@ -129,7 +129,43 @@ async function editComment(commentId, editComment) {
         data: {
             body: editComment
         }
-    })    
+    })
 }
 
-module.exports = {getArticles, getCategories, getArticle, getComments, addNewComment, createNewUser, lookupUser, deleteComment, editComment}
+async function getEditorArticles(userId) {
+    return prisma.post.findMany({
+        where: {
+            authorId: userId
+        },
+        orderBy: {
+            createdAt: 'asc'
+        }
+    })
+}
+
+async function createArticle(title, body, categoryId, userId) {
+    return prisma.post.create({
+        data: {
+            title: title,
+            body: body,
+            authorId: userId,
+            categories: {
+                connect: [{id: categoryId}]
+            }
+        },
+    })
+}
+
+module.exports = {
+    getArticles,
+    getCategories,
+    getArticle,
+    getComments,
+    addNewComment,
+    createNewUser,
+    lookupUser,
+    deleteComment,
+    editComment,
+    getEditorArticles,
+    createArticle
+}
