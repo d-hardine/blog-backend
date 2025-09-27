@@ -49,4 +49,21 @@ const createArticlePost = async (req, res) => {
     res.send('api is working')
 }
 
-module.exports = { jwtAuthenticate, editorLoginPost, authGet, getArticles, createArticlePost }
+const updateArticlePut = async (req, res) => {
+    const {editorTitle, categoryId, editorBody} = req.body
+    await db.updateArticle(editorTitle, editorBody, Number(categoryId), req.params.articleId)
+    res.send('update article working as intended')
+}
+
+const updatePublishPut = async (req, res) => {
+    const oppositePublihBool = !req.body.publishBool
+    await db.updatePublish(req.body.articleId, oppositePublihBool)
+    res.send('update publish working as intended')
+}
+
+const articleDelete = async (req, res) => {
+    await db.deleteArticle(req.body.articleId)
+    res.send('delete working as intended')
+}
+
+module.exports = { jwtAuthenticate, editorLoginPost, authGet, getArticles, createArticlePost, updateArticlePut, updatePublishPut, articleDelete }
