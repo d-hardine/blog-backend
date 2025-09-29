@@ -1,12 +1,16 @@
 const express = require('express')
 const blogRouter = require('./routes/blogRouter')
 const blogEditorRouter = require('./routes/blogEditorRouter')
+const cors = require('cors')
 
 // Load environment variables
 require('dotenv').config();
 
 //express initialization
 const app = express()
+
+//cors initialization
+app.use(cors())
 
 //access html body
 app.use(express.json())
