@@ -137,6 +137,9 @@ async function getEditorArticles(userId) {
         where: {
             authorId: userId
         },
+        include: {
+            categories: true
+        },
         orderBy: {
             createdAt: 'asc'
         }
@@ -150,9 +153,52 @@ async function createArticle(title, body, categoryId, userId) {
             body: body,
             authorId: userId,
             categories: {
-                connect: [{id: categoryId}]
+                connect: [{id: categoryId}],
             }
         },
+    })
+}
+
+async function updateArticle(title, body, categoryId, articleId) {
+    return prisma.post.update({
+        where: {
+            id: articleId
+        },
+        data: {
+            title: title,
+            body: body,
+            categories: {
+                set: [{id: categoryId}]
+            }
+        }
+    })    
+}
+
+async function updatePublish(articleId, newBool) {
+    const stopUpdatedAt = await prisma.post.findFirst({
+        where: {
+            id: articleId
+        },
+        select: {
+            updatedAt: true
+        }
+    })
+    return prisma.post.update({
+        where: {
+            id: articleId
+        },
+        data: {
+            published: newBool,
+            updatedAt: stopUpdatedAt.updatedAt
+        }
+    })
+}
+
+async function deleteArticle(articleId) {
+    return prisma.post.delete({
+        where: {
+            id: articleId
+        }
     })
 }
 
@@ -167,5 +213,8 @@ module.exports = {
     deleteComment,
     editComment,
     getEditorArticles,
-    createArticle
+    createArticle,
+    updateArticle,
+    updatePublish,
+    deleteArticle,
 }
